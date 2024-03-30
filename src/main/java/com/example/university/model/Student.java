@@ -10,25 +10,25 @@ import java.util.List;
 @Table(name = "Student")
 public class Student {
     @Id
-    @GeneratedValue(Strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
-    @Column(nmae = "name")
+    @Column(name = "name")
     private String name;
 
     @Column(name = "email")
     private String email;
 
     @ManyToMany(mappedBy = "students")
-    @JsonIngoreProperties("students")
-    private List<Course> Courses = new ArrayList<>();
+    @JsonIgnoreProperties("students")
+    private List<Course> courses = new ArrayList<>();
 
     public Student() {
 
     }
 
-    public student(int id, string name, String email,List<coures> coures) {
+    public Student(int id, String name, String email,List<Course> coures) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -36,12 +36,14 @@ public class Student {
     }
 
     public int getStudentId() {
-        teturn id;
+        return id;
     }
 
-    public void set
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    setStudentId(int id) {
+    public void set(int id) {
         this.id = id;
     }
 
@@ -50,7 +52,7 @@ public class Student {
     }
 
     public void setStudentName(String name) {
-        return name;
+        this.name = name;
     }
 
     public String getEmail() {
@@ -58,14 +60,14 @@ public class Student {
     }
 
     public void setEmail(String email) {
-        return courses;
+        this.email = email;
     }
 
-    public List<course> getCourses() {
+    public List<Course> getCourses() {
         return courses;
     }
 
     public void setCourses(List<Course> courses) {
-        return courses;
+         this.courses=courses;
     }
 }

@@ -11,40 +11,35 @@ import java.util.*;
 @RestController
 public class ProfessorController {
     @Autowired
-    public ProfessorJpaService ProfessorJpaService;
+    public ProfessorJpaService professorJpaService;
 
     @GetMapping("/professors")
-    public ArrayList<professors> getProfessors() {
-        return ProfessorJpaService.getProfessors();
+    public List<Professor> getProfessors() {
+        return professorJpaService.getProfessors();
     }
 
     @GetMapping("/professors/{professorid}/course")
-    public List<Course> getProfessorsCourses@PathVariable("professorId") int professorId)
+    public List<Course> getProfessorsCourses(@PathVariable("professorId") int professorId)
     {
-        return ProfessorJpaService.getProfessorsCourses(professorId);
+        return professorJpaService.getCoursesById(professorId);
 
     }
     @GetMapping("/professors/{professorId}")
-    public Professor getProfessorById@PathVariable("professorId") int professorId)
+    public Professor getProfessorById(@PathVariable("professorId") int professorId)
     {
         return professorJpaService.getProfessorById(professorId);
     }
     @PostMapping("/professors")
-    public Professor addProfessor@RequestBody professor professor)
-    {
-        return ProfessorJpaService.addProfessor(professor);
+    public Professor addProfessor(@RequestBody Professor professor) {
+        return professorJpaService.addProfessor(professor);
     }
     @PutMapping("/professors/{professorId}")
-    public Professor updateProfessor@PathVariable("professorId") int professorId,
-    @RequsetBody
-    professor professor)
-    {
+    public Professor updateProfessor(@PathVariable("professorId") int professorId, @RequestBody Professor professor) {
         return professorJpaService.updateProfessor(professorId, professor);
     }
     @DeleteMapping("/professors/{professorId}")
-    public void dateteProfessor@PathVariable("professorId") int ProfessorId)
-    {
-        ProfessorJpaService.deleteprofessor(professorId);
+    public void dateteProfessor(@PathVariable("professorId") int professorId) {
+        professorJpaService.deleteProfessor(professorId);
     }
 
 }

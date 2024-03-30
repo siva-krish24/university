@@ -1,13 +1,14 @@
 package com.example.university.service;
 
-import java.util.ArryList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.example.university.model.*;
 
+import com.example.university.repository.CourseJpaRepository;
 import com.example.university.repository.ProfessorJpaRepository;
-import com.example.university.repository.ProfessorJPaRepository;
 
+import com.example.university.repository.ProfessorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -15,51 +16,55 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Service
 
-public class ProfessorJPaService implements professorRepository {
+public class ProfessorJpaService implements ProfessorRepository {
     @Autowired
-    private CourseJpaRepository professorJpaRepository;
+    private CourseJpaRepository courseJpaRepository;
 
     @Autowired
-    private professorJPaRepository professorJPaRepository;
+    private ProfessorJpaRepository professorJPaRepository;
 
-    @Override
 
-    public ArrayList<Professor> getProfessor() {
-        List<Professor> professorList = ProfessorJpaRepository.findAll();
-        ArryList<Professor> professor = new ArrayList<>(professorList);
-        return professor;
-    }
 
-    @Override
-    public professor getProfessorById(int professorId) {
+    public Professor getProfessorById(int professorId) {
         try {
-            Professor professor = professorJpaRepository.findById(professorId).get();
-            return Professor;
+            Professor professor = professorJPaRepository.findById(professorId).get();
+            return professor;
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
 
     @Override
+    public List<Professor> getProfessors() {
+        return professorJPaRepository.findAll();
+    }
+
+    @Override
+    public List<Course> getCoursesById(int professorId) {
+        Professor professor = professorJPaRepository.findById(professorId).get();
+        return courseJpaRepository.findAll().stream()
+                .filter(course -> course.getProfessor().getProfessorId()==professorId).collect(Collectors.toList());
+    }
+
+    @Override
 
     public Professor addProfessor(Professor professor) {
-        professorJpaRepository.save(Professor);
+        professorJPaRepository.save(professor);
         return professor;
 
     }
 
     @Override
-    public Professor updateProfessor(int ProfessorId, Professor professor) {
+    public Professor updateProfessor(int professorId, Professor professor) {
         try {
-            Professor newProfessor = ProfessorJpaRepository.findById(ProfessorId).get();
-            if (course.getCoursesName() != null) {
-                newProfessor.setProfessor(Professor.getProfessorName());
-
+            Professor newProfessor = professorJPaRepository.findById(professorId).get();
+            if (professor.getprofessorName() != null) {
+                newProfessor.setProfessorName(professor.getprofessorName());
             }
-            if (Professor.getDepartment() != null) {
-                newProfessor.setDepartment(Professor.getDepartment());
+            if (professor.getDepartment() != null) {
+                newProfessor.setDepartment(professor.getDepartment());
             }
-            ProfessorJpaRepository.save(newProfessor);
+            professorJPaRepository.save(newProfessor);
             return newProfessor;
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -69,7 +74,7 @@ public class ProfessorJPaService implements professorRepository {
     @Override
     public void deleteProfessor(int ProfessorId) {
         try {
-            ProfessorJpaRepository.deleteByID(ProfessorId);
+            professorJPaRepository.deleteById(ProfessorId);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
@@ -77,7 +82,6 @@ public class ProfessorJPaService implements professorRepository {
 
     @Override
     public Course getProfessorCourse(int professorId) {
-        // TODO Auto-generated method stub
         return null;
     }
 

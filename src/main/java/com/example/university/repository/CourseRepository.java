@@ -1,10 +1,10 @@
 package com.example.university.repository;
 
 import java.util.*;
-import com.exampel.university.model.*;
+import com.example.university.model.*;
 
 public interface CourseRepository {
-    List<course> getCourses();
+    List<Course> getCourses();
 
     Course getCoursesById(int courseId);
 

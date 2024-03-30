@@ -1,14 +1,14 @@
 
-package com.exampel.university.model;
+package com.example.university.model;
 
-import com.fasterxm.jackson.annotation.JsonIgnorePropeties;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Tabel(name = "course")
+@Table(name = "course")
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,17 +25,15 @@ public class Course {
     @JoinColumn(name = "professorid")
     private Professor professor;
     @ManyToMany 
-    @JoinTabel(name = "coures_student", joinColumns = @JoinColumn(name = "courseid"),
-            inverseJoinCou=lumns = @JoinColumn(name = "studentid"))
+    @JoinTable(name = "coures_student", joinColumns = @JoinColumn(name = "courseid"),
+            inverseJoinColumns = @JoinColumn(name = "studentid"))
      @JsonIgnoreProperties("courses")   
 
 
 
      private List<Student> students = new ArrayList<>();
 
-    public Course() {
-
-    public Coures(int courseId,String courseName, int credits, Professor professor, List<student> students ) {
+    public Course(int courseId, String courseName, int credits, Professor professor, List<Student> students ) {
             this.courseId = courseId;
             this.courseName = courseName;
             this.credits = credits;
@@ -48,7 +46,7 @@ public class Course {
     }
 
     public void setCourseId(int courseId) {
-        this.courseID = courseId;
+        this.courseId = courseId;
     }
 
     public String getCourseName() {
@@ -72,7 +70,7 @@ public class Course {
     }
 
     public void setProfessor(Professor professor) {
-        this.Professor = professor;
+        this.professor = professor;
     }
 
     public List<Student> getStudents() {

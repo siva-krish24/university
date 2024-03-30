@@ -1,13 +1,16 @@
 package com.example.university.service;
 
-import java.util.ArryList;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import com.example.university.model.professor;
+import com.example.university.model.Course;
+import com.example.university.model.Professor;
+import com.example.university.model.Student;
 import com.example.university.repository.CourseJpaRepository;
-import com.example.university.repository.professorJPaRepository;
+import com.example.university.repository.CourseRepository;
+import com.example.university.repository.ProfessorJpaRepository;
 
-import com.example.university.repository.professorRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,25 +19,25 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Service
 
-public class CourseJPaService implements CourseRepository {
+public class CourseJpaService implements CourseRepository {
     @Autowired
-    private CourseJpaRepository CourseJpaRepository;
+    private CourseJpaRepository courseJpaRepository;
 
     @Autowired
-    private professorJPaRepository professorJPaRepository;
-
+    private ProfessorJpaRepository professorJPaRepository;
+    @Autowired
+    private StudentJpaService studentJPaRepository;
     @Override
 
     public List<Course> getCourses() {
-        List<Course> courseList = CourseJpaRepository.findAll();
-        ArryList<Course> courses = new ArrayList<>(courseList);
-        return courses;
+        List<Course> courseList = courseJpaRepository.findAll().stream().collect(Collectors.toList());
+        return new ArrayList<>(courseList);
     }
 
     @Override
-    public Course getCourseById(int courseId) {
+    public Course getCoursesById(int courseId) {
         try {
-            course course = CourseJpaRepository.findById(courseId).get();
+            Course course = courseJpaRepository.findById(courseId).get();
             return course;
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Wrong courseId");
@@ -44,12 +47,11 @@ public class CourseJPaService implements CourseRepository {
     @Override
 
     public Course addCourse(Course course) {
-        Professor Professor = course.getProfessor();
-        int professorId = professor.getProfessorID();
+        Professor professor = course.getProfessor();
+        int professorId = professor.getProfessorId();
         try {
-            professor = professorRepository.findById(professorId).get();
-            CourseJpaRepository.save(coursee);
-            CourseJpaRepository.save(coursee);
+            professor = professorJPaRepository.findById(professorId).get();
+            courseJpaRepository.save(course);
             return course;
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Wrong professorId");
@@ -58,14 +60,14 @@ public class CourseJPaService implements CourseRepository {
 
     }
 
-    @Override 
-    public Course updateCourse(int courseId Course course) {
+    @Override
+    public Course updateCoures(int courseId, Course course) {
         try {
-            Course newCourse = CourseJpaRepository.findById(courseId).get();
-            if (course.getCoursesName() != null) {
-                newCourse.setCourseName(course.getCoursesName());
+            Course newCourse = courseJpaRepository.findById(courseId).get();
+            if (course.getCourseName() != null) {
+                newCourse.setCourseName(course.getCourseName());
 
-            } 
+            }
             if (course.getCredits() != 0) {
                 newCourse.setCredits(course.getCredits());
             }
@@ -73,40 +75,60 @@ public class CourseJPaService implements CourseRepository {
                 Professor professor = course.getProfessor();
                 int professorId = professor.getProfessorId();
                 Professor newprofessor = professorJPaRepository.findById(professorId).get();
-                newCourse.setprofessor(newprofessor);
+                newCourse.setProfessor(newprofessor);
             }
-            CourseJpaRepository.save(newCourse);
+            courseJpaRepository.save(newCourse);
             return newCourse;
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Worng professorId");
-        }
-    }
+        }    }
 
     @Override
-    public void deleteCourse(int courseId) {
+    public void deleteCoures(int courseId) {
         try {
-            CourseJpaRepository.deleteByID(courseId);
+            courseJpaRepository.deleteById(courseId);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
 
     @Override
-    public Professor getCourseprofessor(int courseId) {
+    public Professor getCoursesProfessor(int courseId) {
         try {
-            Course course = courseJpaRepository.findByID(courseId).get();
+            Course course = courseJpaRepository.findById(courseId).get();
+            return professorJPaRepository.findById(course.getProfessor().getProfessorId()).get();
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
 
     @Override
-    public List<Student> getCourseStudents(int courseId) {
+    public List<Student> getCoursesStudents(int courseId) {
         try {
-            Course course = courseJpaRepository.findByID).get();
+            Course course = courseJpaRepository.findById(courseId).get();
+
+            List<Student> students =  studentJPaRepository.getStudent();
+            List<Integer> studentIds = new ArrayList<>();
+            for(Student student : students){
+                for(Course course1: student.getCourses()){
+                    if (course1.getCourseId() == courseId){
+                        studentIds.add(student.getStudentId());
+                    }
+                }
+            }
+            List<Student> resultList = new ArrayList<>();
+            for(int id: studentIds){
+                resultList.add(studentJPaRepository.getStudentById(id));
+            }
+            return resultList;
         } catch (Exception e) {
-           throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Wrong professorId");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Wrong professorId");
         }
-        
     }
+
+
+
+
+
+
 }

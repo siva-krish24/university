@@ -1,18 +1,18 @@
 package com.example.university.repository;
 
+import com.example.university.model.Course;
 import com.example.university.model.Professor;
-import com.exampel.university.model.Course;
 
-import java.util.ArryList;
+import java.util.List;
 
-public interface professorRepository {
-    ArrayList<Professor> getProfessors();
+public interface ProfessorRepository {
+    List<Professor> getProfessors();
 
-    Professor getCoursesById(int ProfessorId);
+   List<Course> getCoursesById(int ProfessorId);
 
-    Professor addProfessor(Professor professor);
+   Professor addProfessor(Professor professor);
 
-    Professor updateProfessor(int professorId, Professor professor);
+   Professor updateProfessor(int professorId,Professor professor);
 
     void deleteProfessor(int professorId);
 

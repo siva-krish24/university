@@ -3,64 +3,54 @@ package com.example.university.controller;
 import com.example.university.model.Course;
 import com.example.university.model.Professor;
 import com.example.university.model.Student;
-import com.example.university.service.CounrseJpaService;
-import com.springFramework.web.bind.annotation
+import com.example.university.service.CourseJpaService;
+import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.springFramework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
 
 @RestController
-public class CourseContriller {
+public class CourseController {
 
     @Autowired
-    public CounrseJpaService CounrseJpaService;
+    public CourseJpaService courseJpaService;
 
     @GetMapping("/courses")
-    pubilc List<Course> gatCourses() {
-        return CounrseJpaService.gatCourses();
+    public List<Course> gatCourses() {
+        return courseJpaService.getCourses();
 
     }
 
     @GetMapping("/courses/{courseId}")
-    public Course getCourseById@pathVarible("courseId") int courseId)
+    public Course getCourseById( @PathVariable("courseId") int courseId)
     {
-        return courseJpaSerVice.getCoures();
-
+        return courseJpaService.getCoursesById(courseId);
     }
     @PostMapping("/coureses")
-    pubilc Coures addCourese
-    @RequsetBody
-    Course course)
-    {
-        return courseJpaSerVice.addCourse(course);
+    public Course addCourese( @RequestBody Course course) {
+        return courseJpaService.addCourse(course);
     }
     @PutMapping("/courses/{courseId}")
-    public Coures updateCourse@PathVarible("courseId") int courseId,
-    @RequestBody
-    Course course)
-    {
-        return courseJpaSerVice.updateCourse(courseId, course);
+    public Course updateCourse (@PathVariable("courseId") int courseId, @RequestBody Course course) {
+        return courseJpaService.updateCoures(courseId, course);
     }
-    @DeletMapping("/courses{courseId}")
-    public void deleteCourese@PathVarible("courseId") int courseId)
-    {
-        courseJapService.deleteCourse
+    @DeleteMapping("/courses/{courseId}")
+    public void deleteCourese(@PathVariable("courseId") int courseId) {
+        courseJpaService.deleteCoures(courseId);
     }
     @GetMapping("/courses/{courseId}/professor")
-    public Professor getCourseStudents@pathVarible("courseId") int courseId)
-    {
-        return courseJpaService.getCourseStudents(courseId);
+    public Professor getCourseProfessor(@PathVariable("courseId") int courseId) {
+        return courseJpaService.getCoursesProfessor(courseId);
     }
 
     @GetMapping("/courese/{courseId}/students")
-    public List<Student>getCourseStudents@PathVariable("courseId") int courseId)
+    public List<Student> getCourseStudents(@PathVariable("courseId") int courseId)
     {
-        return courseJpaSerVice.getCourseStudents(courseId);
+        return courseJpaService.getCoursesStudents(courseId);
     }
 
 }

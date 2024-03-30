@@ -7,16 +7,15 @@
  */
 
 // Write your code here
-package com.exampel.university.model;
+package com.example.university.model;
 
 import javax.persistence.*;
-import com.example.university.model.*;
 
 @Entity
 @Table(name = "professor")
-public class professor {
+public class Professor {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDEIDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int professorId;
 
@@ -26,11 +25,11 @@ public class professor {
     @Column(name = "department")
     private String department;
 
-    public professor() {
+    public Professor() {
 
     }
 
-    public professor(int professorId, String name, String department) {
+    public Professor(int professorId, String name, String department) {
         this.professorId = professorId;
         this.name = name;
         this.department = department;

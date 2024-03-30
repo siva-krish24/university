@@ -1,10 +1,9 @@
-package com.exampel.university.repository;
+package com.example.university.repository;
 
-import org.hibernate.metamodel.model.convert.spi.JpaAttributeConverter;
-import org.springframework.data.Jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.exampel.university.model.*;
+import com.example.university.model.*;
 
 @Repository
 public interface CourseJpaRepository extends JpaRepository<Course, Integer> {

@@ -1,17 +1,18 @@
-package com.example.university.Repository;
+package com.example.university.repository;
 
-import java.util.ArryList;
 import java.util.List;
 
 import com.example.university.model.Course;
 import com.example.university.model.Student;
 
 public interface StudentRepository {
-    ArryList<Student> getStudent();
+    List<Student> getStudent();
 
     Student addStudentById(int studentId);
 
-    Student addStudent(Student, student);
+    Student getStudentById(int studentId);
+
+    Student addStudent(Student student);
 
     Student updateStudent(int studentId, Student student);
 
@@ -19,4 +20,5 @@ public interface StudentRepository {
 
     List<Course> getStudentCourses(int studentId);
 
+    List<Course> getStudentCourse(int studentId);
 }
